@@ -28,6 +28,30 @@ describe BigDecimal do
     end
   end
 
+  describe ".slovom_short" do
+    it "converts stotinki into a valid string" do
+      number = BigDecimal.new("00.56")
+      number.slovom_short.should eq("56 ст.")
+
+      number = BigDecimal.new("00.04")
+      number.slovom_short.should eq("04 ст.")
+
+      number = BigDecimal.new("00.00")
+      number.slovom_short.should eq("")
+    end
+
+    it "converts levs into a valid string" do
+      number = BigDecimal.new("1.00")
+      number.slovom_short.should eq("един лев")
+
+      number = BigDecimal.new("14.00")
+      number.slovom_short.should eq("четиринадесет лв.")
+
+      number = BigDecimal.new("156320010.00")
+      number.slovom_short.should eq("сто петдесет и шест милиона триста и двадесет хиляди и десет лв.")
+    end
+  end
+
   describe ".slovom" do
     it "converts stotinki into a valid string" do
       number = BigDecimal.new("00.56")

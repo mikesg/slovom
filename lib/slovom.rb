@@ -6,6 +6,10 @@ class BigDecimal
   def slovom
     Slovom::Verbalizer.new(self).to_s
   end
+
+  def slovom_short
+    Slovom::Verbalizer.new(self, true).to_s
+  end
 end
 
 module Slovom
@@ -14,17 +18,38 @@ module Slovom
     attributes = %w{decimal levs stotinki output levs_title stotinki_title too_big}
     attributes.each {|attribute| attr_accessor attribute.to_sym }
 
-    def initialize(decimal)
+    def initialize(decimal, shorten = false)
       @decimal = decimal.round(2)
       @levs = @decimal.fix.to_i
       @stotinki = ((@decimal.frac.to_s('F').gsub("0.", ''))+"0")[0..1].to_i
-      @levs == 1 ? @levs_title = " лев" : @levs_title = " лева"
-      @stotinki == 1 ? @stotinki_title = " стотинка" : @stotinki_title = " стотинки"
+      @levs_title = if @levs == 1
+                          " лев"
+                        elsif shorten
+                          " лв."
+                        else
+                          " лева"
+                        end
+      @stotinki_title = if shorten
+                          " ст."
+                        elsif @stotinki == 1
+                          " стотинка"
+                        else
+                          " стотинки"
+                        end
       @too_big = "много"
       @output = ""
-      @output += numbers_slovom(@levs) + @levs_title unless numbers_slovom(@levs).nil? || numbers_slovom(@levs) == "много"
-      @output += " и " unless numbers_slovom(@levs).nil? || numbers_slovom(@levs) == "много" || numbers_slovom(@stotinki, feminine=true).nil? || numbers_slovom(@stotinki, feminine=true) == "много"
-      @output += numbers_slovom(@stotinki, feminine=true) + @stotinki_title unless numbers_slovom(@stotinki, feminine=true).nil? || numbers_slovom(@stotinki, feminine=true) == "много"
+
+      [numbers_slovom(@levs), numbers_slovom(@stotinki, feminine=true)].tap do |lv, st|
+        @output += lv + @levs_title unless lv.nil? || lv == @too_big
+        if not (st.nil? || st == @too_big)
+          @output += " и " unless lv.nil? || lv == @too_big
+          if shorten
+            @output += "#{"%02d" % @stotinki}#{@stotinki_title}"
+          else
+            @output += st + @stotinki_title
+          end
+        end
+      end
     end
 
     def to_s
