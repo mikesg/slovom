@@ -46,6 +46,11 @@ product3.price.slovom => "седемдесет и пет стотинки"
 "76.03".to_d.slovom => "седемдесет и шест лева и три стотинки"
 ```
 
+Alternatively, call the `.slovom_short` method to generate a shortened version of the string.
+```ruby
+"76.03".to_d.slovom_short => "седемдесет и шест лв и 03ст"
+```
+
 It parses numbers of up to 1 quadrillion (1000000000000000), as larger numbers are not likely to be used in financial transactions and hence no need to be expressed verbally. It returns the string "много" if higher number is used.
 Note the `.slovom` method is attached to the `BigDecimal` class, which is also used by default for decimals in Rails.
 

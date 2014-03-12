@@ -25,12 +25,12 @@ module Slovom
       @levs_title = if @levs == 1
                           " лев"
                         elsif shorten
-                          " лв."
+                          " лв"
                         else
                           " лева"
                         end
       @stotinki_title = if shorten
-                          " ст."
+                          "ст"
                         elsif @stotinki == 1
                           " стотинка"
                         else

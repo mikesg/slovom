@@ -31,10 +31,10 @@ describe BigDecimal do
   describe ".slovom_short" do
     it "converts stotinki into a valid string" do
       number = BigDecimal.new("00.56")
-      number.slovom_short.should eq("56 ст.")
+      number.slovom_short.should eq("56ст")
 
       number = BigDecimal.new("00.04")
-      number.slovom_short.should eq("04 ст.")
+      number.slovom_short.should eq("04ст")
 
       number = BigDecimal.new("00.00")
       number.slovom_short.should eq("")
@@ -45,10 +45,10 @@ describe BigDecimal do
       number.slovom_short.should eq("един лев")
 
       number = BigDecimal.new("14.00")
-      number.slovom_short.should eq("четиринадесет лв.")
+      number.slovom_short.should eq("четиринадесет лв")
 
       number = BigDecimal.new("156320010.00")
-      number.slovom_short.should eq("сто петдесет и шест милиона триста и двадесет хиляди и десет лв.")
+      number.slovom_short.should eq("сто петдесет и шест милиона триста и двадесет хиляди и десет лв")
     end
   end
 
